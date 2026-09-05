@@ -1,0 +1,59 @@
+# Unified System Architecture (working name: TBD — avoid "CLARITY," already taken by federal legislation)
+
+## Core idea in one line
+A decentralized ledger network that lets anyone post/sell across any platform in one shot, tracks the full resale chain, pays out to everyone in that chain, verifies physical goods without a single authority, and settles value on a chain deliberately kept separate from the record layer — so no single person, company, or platform ever controls the whole thing.
+
+---
+
+## Layer 1: The Substrate (relay layer)
+The connective tissue. Every other chain plugs into this. It doesn't hold value or make decisions — it just passes verified events between chains and keeps them in sync. Modeled on Polkadot's relay-chain/parachain pattern: independent chains, one shared root of trust.
+
+## Layer 2: Record/Utility Chain (the provenance ledger)
+- Every post, sale, and resale gets logged here: campaign ID, group ID, platform ID, Google Trends ID.
+- Resale chains are tracked explicitly (a → b → c or a → d → f) — each hop cryptographically references the one before it, so the full lineage of a sale is provable.
+- Deliberately non-speculative — this token/record has no independent trading value, so it stays clear of securities classification (commodity-like, per CLARITY Act framework).
+- Public/open by design — strengthens the "this is infrastructure, not an investment" position.
+
+## Layer 3: Value/Payment Chain (the treasury)
+- Where actual settlement happens (x402, stablecoins, whatever currency).
+- Controlled by MPC (multi-party computation): the signing key is split across multiple holders (sellers, trust-line reps, maybe an AI agent as one share) — no single party can move funds alone.
+- Payouts follow the full resale chain, not just first/last — splits go to everyone who touched the sale, so every link is incentivized to record honestly.
+- This is the chain that carries the heavier compliance burden (AML, money-transmission) — kept structurally separate so scrutiny here doesn't contaminate Layer 2's provenance data.
+
+## Layer 4: The Oracle Layer (physical-world verification)
+Solves the "who do we trust to say this is real" problem for physical goods:
+- Multiple independent sources must agree before something is ledgered: satellite/air imagery, OCR'd shipping docs, independent worker weigh-ins, industry intake totals.
+- Mismatches escalate to a council + whoever signed the bill of lading/weighing docs — accountability lands on named signers, not an anonymous system.
+- Tiered by value: bulk/high-value goods get full multi-source verification; small transactions fall back to self-attestation.
+- Real defense against a single bad actor, though *collusion* among "independent" sources remains the open risk — solvable later with staking/slashing (attestors post collateral, lose it if proven wrong).
+
+## Layer 5: Platform Integration (the fan-out)
+- One event ("sale confirmed") published to a rolling event bus (Kafka-style), consumed independently by listeners for each platform (eBay, Facebook, X, YouTube, Google Calendar).
+- No platform agreement required — built on individual user OAuth authorization, same model as Buffer/Zapier/Hootsuite.
+- Each platform tagged by trust tier: full API (Calendar, YouTube, X), partial/restricted (eBay resale rules), self-reported only (Facebook Groups — locked down since 2018).
+- Partial failure doesn't break the system — the event stays queued and retries per platform independently.
+
+## Layer 6 (long-range, separate track): GDP-Pegged Settlement Layer
+- A further-out extension, not a dependency of Layers 1–5: a rules-based, GDP-referenced settlement unit for cross-border trade, independent of neobanks — closer to Keynes's Bancor proposal or the IMF's SDR, but decentralized.
+- This is a nation-state-scale idea, gated on real legal/monetary-sovereignty questions, not a technical build step. Worth keeping on paper, not on the roadmap yet.
+
+---
+
+## How it all connects
+1. A seller lists something → **Layer 5** fans it out across platforms + calendar simultaneously.
+2. A sale happens (on-platform or via x402) → **Layer 4** verifies it's real (for physical goods) → **Layer 2** ledgers the full resale chain.
+3. **Layer 3** releases payment via MPC, split across everyone in the chain.
+4. **Layer 1** keeps all of this in sync without any single chain needing to trust the others blindly.
+
+## Known open risks (carried forward, not solved)
+- Sybil resistance for trust lines (fake accounts gaming payouts)
+- Collusion among "independent" oracle attestors
+- Legal exposure once real money moves — money-transmission/AML counsel needed before Layer 3 goes live
+- Platforms can revoke API access unilaterally regardless of ToS compliance
+
+## Suggested build order (least resistance first)
+1. **Layer 2 + Layer 5, narrow scope**: x402 + Google Calendar + one open platform (YouTube or X), fully authorized, no reselling yet — prove the "one shot, multi-platform, ledgered" loop end to end.
+2. **Layer 3 (MPC treasury)**, small scale, before real dollar volume — test the split-payout logic on the resale chain.
+3. **Layer 4 (oracle)**, only once physical goods enter the picture — not needed for pure digital content (x402-postage's original use case).
+4. **eBay/Facebook Groups integration** last — highest legal/ToS risk, do only with real usage data and legal review in hand.
+5. **Layer 6 (GDP settlement)** — shelved indefinitely; revisit only if the whole system reaches a scale where that conversation is actually relevant.
