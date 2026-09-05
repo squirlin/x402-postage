@@ -48,11 +48,15 @@ Outputs can be used across apps, funnels, automations, or standalone.
 
 ---
 
-## Status  
+---
+
+## Status
+
 This repository contains **public-facing messaging and documentation**.  
 The engine, algorithms, and internal logic remain private.
 
+See [system-architecture.md](system-architecture.md) for the full system design.
+
 ---
 
-## License  
-MIT
+## License
